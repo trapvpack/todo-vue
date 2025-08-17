@@ -3,6 +3,18 @@ import { ref } from 'vue'
 const props = defineProps<{
   todos: Array<{ id: number; text: string; done: boolean }>
 }>()
+
+const emit = defineEmits<{
+  (e: 'toggle', todo: { id: number; text: string; done: boolean }): void
+  (e: 'delete', todo: { id: number; text: string; done: boolean }): void
+}>()
+
+function toggleTodo(todo: { id: number; text: string; done: boolean }) {
+  emit('toggle', todo)
+}
+function deleteTodo(todo: { id: number; text: string; done: boolean }) {
+  emit('delete', todo)
+}
 </script>
 
 <template>
@@ -27,7 +39,7 @@ const props = defineProps<{
         </label>
 
         <button
-          @click="$emit('delete', todo)"
+          @click="() => deleteTodo(todo)"
           class="text-red-500 hover:text-red-700"
           aria-label="Удалить задачу"
         >
