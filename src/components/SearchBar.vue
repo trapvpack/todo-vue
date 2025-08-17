@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import searchIcon from '../assets/icons/Vector.svg'
-
+import { IconSearch } from '@iconify-prerendered/vue-mdi'
 const emit = defineEmits<{
   (e: 'search', query: string): void
 }>()
@@ -23,10 +22,9 @@ function onSearch() {
       @keyup.esc="onSearch"
       aria-label="Search notes"
     />
-    <img
-      class="w-5 h-5 absolute right-7 pointer-events-none"
-      :src="searchIcon"
-      alt="search icon"
+    <IconSearch
+      class="absolute right-2 w-7 h-7 cursor-pointer text-indigo-500"
+      @click="onSearch"
       aria-hidden="true"
     />
   </div>
