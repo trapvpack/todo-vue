@@ -13,18 +13,19 @@ const props = defineProps<{
         :key="todo.id"
         class="flex items-center justify-between p-2 border-b last:border-b-0"
       >
-        <label class="flex items-center space-x-3 cursor-pointer">
-          <input
-            type="checkbox"
-            v-model="todo.done"
-            class="form-checkbox h-5 w-5 text-indigo-600"
-            @change="$emit('toggle', todo)"
-          />
-        </input>
-        <span :class="{ 'line-through text-gray-400': todo.done }">
-          {{ todo.text }}
-        </span>
-        </label>
+        <div class="flex items-center space-x-3">
+          <label class="flex items-center">
+            <input
+              type="checkbox"
+              v-model="todo.done"
+              class="form-checkbox h-5 w-5 text-indigo-600 cursor-pointer"
+              @change="() => toggleTodo(todo)"
+            />
+          </label>
+          <span :class="{ 'line-through text-gray-400': todo.done }">
+            {{ todo.text }}
+          </span>
+        </div>
 
         <button
           @click="$emit('delete', todo)"
