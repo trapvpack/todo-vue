@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import searchIcon from '../assets/icons/Vector.svg'
-const searchQuery = ref('')
+
+const emit = defineEmits<{
+  (e: 'search', query: string): void
+}>()
+
+const searchQuery = defineModel<string>()
+
+function onSearch() {
+  emit('search', searchQuery.value ?? '')
+}
 </script>
 
 <template>
@@ -11,8 +19,8 @@ const searchQuery = ref('')
       placeholder="Search notes"
       type="text"
       v-model="searchQuery"
-      @keyup.enter="$emit('search', searchQuery)"
-      @keyup.esc="$emit('search', '')"
+      @keyup.enter="onSearch"
+      @keyup.esc="onSearch"
       aria-label="Search notes"
     />
     <img
