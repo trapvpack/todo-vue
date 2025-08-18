@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SearchBar from './SearchBar.vue'
 import TodoFilter from './TodoFilter.vue'
-import { ref, computed } from 'vue'
-const filters = ref([
+import { reactive } from 'vue'
+const filters = reactive([
   { id: 1, text: 'All', isActive: true },
   { id: 2, text: 'Completed', isActive: false },
   { id: 3, text: 'Incompleted', isActive: false },
@@ -17,7 +17,7 @@ const emit = defineEmits<{
 }>()
 
 function onFilterSelected(selectedFilter: { id: number; text: string; isActive: boolean }) {
-  filters.value.forEach((f) => {
+  filters.forEach((f) => {
     f.isActive = f.id === selectedFilter.id
   })
   emit('filter', selectedFilter)
