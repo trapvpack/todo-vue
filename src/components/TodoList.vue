@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import TodoCard from './TodoCard.vue'
 const props = defineProps<{
   todos: Array<{ id: number; text: string; done: boolean }>
 }>()
@@ -9,10 +9,10 @@ const emit = defineEmits<{
   (e: 'delete', todo: { id: number; text: string; done: boolean }): void
 }>()
 
-function toggleTodo(todo: { id: number; text: string; done: boolean }) {
+function onToggle(todo: { id: number; text: string; done: boolean }) {
   emit('toggle', todo)
 }
-function deleteTodo(todo: { id: number; text: string; done: boolean }) {
+function onDelete(todo: { id: number; text: string; done: boolean }) {
   emit('delete', todo)
 }
 </script>
@@ -20,33 +20,14 @@ function deleteTodo(todo: { id: number; text: string; done: boolean }) {
 <template>
   <div class="max-w-xl mx-auto bg-white rounded shadow p-6">
     <ul>
-      <li
-        v-for="todo in todos"
+      <TodoCard
+        v-for="todo in props.todos"
         :key="todo.id"
-        class="flex items-center justify-between p-2 border-b last:border-b-0"
+        :todo="todo"
+        @toggle="onToggle"
+        @delete="onDelete"
       >
-        <div class="flex items-center space-x-3">
-          <label class="flex items-center">
-            <input
-              type="checkbox"
-              v-model="todo.done"
-              class="form-checkbox h-5 w-5 text-indigo-600 cursor-pointer"
-              @change="() => toggleTodo(todo)"
-            />
-          </label>
-          <span :class="{ 'line-through text-gray-400': todo.done }">
-            {{ todo.text }}
-          </span>
-        </div>
-
-        <button
-          @click="() => deleteTodo(todo)"
-          class="text-red-500 hover:text-red-700"
-          aria-label="Удалить задачу"
-        >
-          &#x2716;
-        </button>
-      </li>
+      </TodoCard>
     </ul>
   </div>
 </template>
