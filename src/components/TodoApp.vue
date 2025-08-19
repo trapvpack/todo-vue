@@ -22,8 +22,8 @@ function onDelete(todo: { id: number; text: string; done: boolean }) {
 }
 const activeFilter = ref(1)
 
-function onFilterSelected(selectedFilter: { id: number; text: string; isActive: boolean }) {
-  activeFilter.value = selectedFilter.id
+function onFilterSelected(selectedFilter: number) {
+  activeFilter.value = selectedFilter
 }
 
 const filteredTodos = computed(() => {
@@ -35,7 +35,7 @@ const filteredTodos = computed(() => {
 
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col items-center pt-10 max-w-5xl w-5xl relative">
-    <todo-header @filter="onFilterSelected"></todo-header>
+    <todo-header @filter="onFilterSelected" :activeFilter="activeFilter"></todo-header>
     <todo-list
       class="w-full max-w-xl"
       :todos="filteredTodos"
