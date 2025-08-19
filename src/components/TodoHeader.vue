@@ -19,9 +19,6 @@ const emit = defineEmits<{
 
 const searchQuery = ref('')
 
-function onFilterSelected(activeFilter: number) {
-  emit('filter', activeFilter)
-}
 function onSearch(query: string) {
   searchQuery.value = query
   emit('search', query)
@@ -33,7 +30,11 @@ function onSearch(query: string) {
 
   <div class="flex justify-start space-x-2 w-full max-w-3xl mb-6 items-center">
     <search-bar v-model="searchQuery" @search="onSearch" class="flex-grow" />
-    <todo-filter :filters="filters" :activeFilter="props.activeFilter" @filter="onFilterSelected" />
+    <todo-filter
+      :filters="filters"
+      :activeFilter="props.activeFilter"
+      @filter="() => emit('filter', activeFilter)"
+    />
   </div>
 </template>
 

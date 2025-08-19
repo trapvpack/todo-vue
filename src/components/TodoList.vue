@@ -8,13 +8,6 @@ const emit = defineEmits<{
   (e: 'toggle', todoId: number): void
   (e: 'delete', todoId: number): void
 }>()
-
-function onToggle(todoId: number) {
-  emit('toggle', todoId)
-}
-function onDelete(todoId: number) {
-  emit('delete', todoId)
-}
 </script>
 
 <template>
@@ -24,8 +17,8 @@ function onDelete(todoId: number) {
         v-for="todo in props.todos"
         :key="todo.id"
         :todo="todo"
-        @toggle="onToggle"
-        @delete="onDelete"
+        @toggle="() => emit('toggle', todo.id)"
+        @delete="() => emit('delete', todo.id)"
       >
       </TodoCard>
     </ul>
