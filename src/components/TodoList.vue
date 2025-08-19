@@ -5,15 +5,15 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'toggle', todo: { id: number; text: string; done: boolean }): void
-  (e: 'delete', todo: { id: number; text: string; done: boolean }): void
+  (e: 'toggle', todoId: number): void
+  (e: 'delete', todoId: number): void
 }>()
 
-function onToggle(todo: { id: number; text: string; done: boolean }) {
-  emit('toggle', todo)
+function onToggle(todoId: number) {
+  emit('toggle', todoId)
 }
-function onDelete(todo: { id: number; text: string; done: boolean }) {
-  emit('delete', todo)
+function onDelete(todoId: number) {
+  emit('delete', todoId)
 }
 </script>
 

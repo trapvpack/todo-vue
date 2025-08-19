@@ -10,12 +10,16 @@ const todos = reactive([
   { id: 3, text: 'Note #3', done: false },
 ])
 
-function onToggle(todo: { id: number; text: string; done: boolean }) {
-  todo.done = !todo.done
+function onToggle(todoId: number) {
+  todos.forEach((todo) => {
+    if (todo.id === todoId) {
+      todo.done = !todo.done
+    }
+  })
 }
 
-function onDelete(todo: { id: number; text: string; done: boolean }) {
-  const index = todos.findIndex((t) => t.id === todo.id)
+function onDelete(todoId: number) {
+  const index = todos.findIndex((t) => t.id === todoId)
   if (index !== -1) {
     todos.splice(index, 1)
   }

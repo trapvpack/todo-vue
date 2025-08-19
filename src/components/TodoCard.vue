@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { IconTrash } from '@iconify-prerendered/vue-mdi'
 const emit = defineEmits<{
-  (e: 'toggle', todo: { id: number; text: string; done: boolean }): void
-  (e: 'delete', todo: { id: number; text: string; done: boolean }): void
+  (e: 'toggle', todoId: number): void
+  (e: 'delete', todoId: number): void
 }>()
 const props = defineProps<{
   todo: { id: number; text: string; done: boolean }
 }>()
-function toggleTodo(todo: { id: number; text: string; done: boolean }) {
-  emit('toggle', todo)
+function toggleTodo(todoId: number) {
+  emit('toggle', todoId)
 }
-function deleteTodo(todo: { id: number; text: string; done: boolean }) {
-  emit('delete', todo)
+function deleteTodo(todoId: number) {
+  emit('delete', todoId)
 }
 </script>
 
@@ -22,7 +22,7 @@ function deleteTodo(todo: { id: number; text: string; done: boolean }) {
         type="checkbox"
         :checked="props.todo.done"
         class="form-checkbox h-5 w-5 text-indigo-600 cursor-pointer"
-        @change="() => toggleTodo(props.todo)"
+        @change="() => toggleTodo(props.todo.id)"
       />
       <span :class="{ 'line-through text-gray-400': props.todo.done }">
         {{ props.todo.text }}
@@ -30,7 +30,7 @@ function deleteTodo(todo: { id: number; text: string; done: boolean }) {
     </label>
 
     <button
-      @click="() => deleteTodo(todo)"
+      @click="() => deleteTodo(todo.id)"
       class="text-red-500 hover:text-red-700"
       aria-label="Удалить задачу"
     >
