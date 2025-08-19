@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { IconSearch } from '@iconify-prerendered/vue-mdi'
 const emit = defineEmits<{
-  (e: 'search', query: string): void
+  search: [value: (typeof searchQuery)['value']]
 }>()
-
-const searchQuery = defineModel<string>()
-
-function onSearch() {
-  emit('search', searchQuery.value ?? '')
-}
 </script>
 
 <template>
@@ -18,13 +12,13 @@ function onSearch() {
       placeholder="Search notes"
       type="text"
       v-model="searchQuery"
-      @keyup.enter="onSearch"
-      @keyup.esc="onSearch"
+      @keyup.enter="() => emit('search', searchQuery)"
+      @keyup.esc="() => emit('search', searchQuery)"
       aria-label="Search notes"
     />
     <IconSearch
-      class="absolute right-2 w-7 h-7 cursor-pointer text-indigo-500"
-      @click="onSearch"
+      class="absolute right-2 w-7 h-7 cursor-pointer text-indigo-500 transform transition-transform duration-300 hover:scale-115"
+      @click="() => emit('search', searchQuery)"
       aria-hidden="true"
     />
   </div>
