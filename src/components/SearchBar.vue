@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { IconSearch } from '@iconify-prerendered/vue-mdi'
+const searchQuery = defineModel({
+  required: true,
+  default: '',
+})
 const emit = defineEmits<{
   search: [value: (typeof searchQuery)['value']]
 }>()
