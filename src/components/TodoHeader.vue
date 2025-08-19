@@ -33,7 +33,7 @@ function onSearch(query: string) {
     <todo-filter
       :filters="filters"
       :activeFilter="props.activeFilter"
-      @filter="() => emit('filter', activeFilter)"
+      @filter="(filter) => emit('filter', filter)"
     />
   </div>
 </template>
