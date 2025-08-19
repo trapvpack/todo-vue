@@ -1,21 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 const props = defineProps<{
-  filters: Array<{ id: number; text: string; isActive: boolean }>
+  filters: Array<{ id: number; text: string }>
+  activeFilter: number
 }>()
 const open = ref(false)
 function toggleDropdown() {
   open.value = !open.value
 }
+const emit = defineEmits<{
+  (e: 'filter', activeFilter: number): void
+}>()
+function selectFilter(activeFilter: number) {
+  emit('filter', activeFilter)
+  open.value = false
+}
+const activeFilterText = computed(() => {
+  const filter = props.filters.find((filter) => filter.id === props.activeFilter)
+  return filter ? filter.text : ''
+})
+
+function isActive(filterId: number) {
+  return props.activeFilter === filterId
+}
 </script>
 
 <template>
-  <div class="relative inline-block text-left" @keyup.esc="toggleDropdown">
+  <div class="relative inline-block text-left">
     <button
-      class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 w-30 cursor-pointer"
+      class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 w-30 cursor-pointer transition-colors duration-300"
       @click="toggleDropdown"
     >
-      {{ filters.filter((f) => f.isActive)[0].text }}
+      {{ activeFilterText }}
     </button>
 
     <div v-if="open" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg">
@@ -24,9 +40,9 @@ function toggleDropdown() {
           v-for="filter in filters"
           :key="filter.id"
           class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-          :class="{ 'bg-indigo-100': filter.isActive }"
+          :class="{ 'bg-indigo-100': isActive(filter.id) }"
         >
-          <button class="w-full text-left cursor-pointer" @click="$emit('filter', filter)">
+          <button class="w-full text-left cursor-pointer" @click="selectFilter(filter.id)">
             {{ filter.text }}
           </button>
         </li>
