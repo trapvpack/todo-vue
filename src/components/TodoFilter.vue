@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-const props = defineProps<{
-  filters: Array<{ id: number; text: string }>
-  activeFilter: number
-}>()
+import { useTodosStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import type { Filter } from '@/composable/useFilter'
+import type { Todo } from '@/stores/todo'
+
+const todoStore = useTodosStore()
+const { activeFilter, filters } = storeToRefs(todoStore)
+
 const open = ref(false)
 function toggleDropdown() {
   open.value = !open.value
 }
-const emit = defineEmits<{
-  (e: 'filter', activeFilter: number): void
-}>()
-function selectFilter(activeFilter: number) {
-  emit('filter', activeFilter)
+//TODO: composable useDropdown with arg HTML element or HTML element as state
+function selectFilter(filter: Filter<Todo>) {
+  activeFilter.value = filter
   open.value = false
 }
 const activeFilterText = computed(() => {
-  const filter = props.filters.find((filter) => filter.id === props.activeFilter)
-  return filter ? filter.text : ''
+  return activeFilter.value.text
 })
-
-function isActive(filterId: number) {
-  return props.activeFilter === filterId
-}
 
 const target = useTemplateRef<HTMLElement>('target')
 
@@ -43,6 +40,7 @@ watch(target, (el) => {
 <template>
   <div class="relative inline-block text-left" ref="target">
     <button
+      type="button"
       class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 w-30 cursor-pointer transition-colors duration-300"
       @click.stop="toggleDropdown"
     >
@@ -55,9 +53,13 @@ watch(target, (el) => {
           v-for="filter in filters"
           :key="filter.id"
           class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-          :class="{ 'bg-indigo-100': isActive(filter.id) }"
+          :class="{ 'bg-indigo-100': filter.id === activeFilter.id }"
         >
-          <button class="w-full text-left cursor-pointer" @click.stop="selectFilter(filter.id)">
+          <button
+            type="button"
+            class="w-full text-left cursor-pointer"
+            @click="selectFilter(filter)"
+          >
             {{ filter.text }}
           </button>
         </li>
