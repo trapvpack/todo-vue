@@ -3,7 +3,7 @@ import TodoApp from './components/TodoApp.vue'
 </script>
 
 <template>
-  <TodoApp />
+  <div class="flex items-center w-screen justify-center"><TodoApp /></div>
 </template>
 
 <style scoped></style>
